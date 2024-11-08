@@ -1,0 +1,56 @@
+:root {
+  --main-color: #f4f4f9;
+  --primary: #3498db;
+  --font-size: 16px;
+}
+
+body {
+  background-color: var(--main-color);
+}
+
+.steps {
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+  max-width: 600px;
+  margin: 100px auto;
+}
+
+.numbers {
+  display: flex;
+  justify-content: space-around;
+}
+.numbers span {
+  background-color: #ccc;
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 100%;
+}
+
+.numbers .active {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.actions button {
+  background-color: var(--primary);
+  padding: 10px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 22px;
+  color: #fff;
+}
+
+.message {
+  font-size: 25px;
+  text-transform: capitalize;
+  color: #333;
+}
