@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect, ClockLoader } from 'react';
 import { useState } from 'react';
 import { FaDeleteLeft } from 'react-icons/fa6';
+import { BiSolidShow } from 'react-icons/bi';
+import axios from 'axios';
+import DotLoader from 'react-spinners/DotLoader';
 
-const Steps = ({ items }) => {
+const Steps = () => {
+  const [messages, setMessages] = useState([]);
   const [step, setStep] = useState(1);
   const [visible, setVisible] = useState(true);
+  const [isLoading, setISLoading] = useState(false);
 
   const handlePrevious = () => {
     if (step > 1) {
@@ -13,7 +18,7 @@ const Steps = ({ items }) => {
   };
 
   const handleNext = () => {
-    if (step < items.length) {
+    if (step < messages.length) {
       setStep((previous) => previous + 1);
     }
   };
@@ -22,8 +27,23 @@ const Steps = ({ items }) => {
     setVisible(!visible);
   };
 
+  useEffect(() => {
+    setISLoading(true);
+    axios
+      .get('http://localhost:9000/messages')
+      .then((response) => {
+        setMessages(response.data);
+        setISLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  if (isLoading) {
+    return <DotLoader />;
+  }
+
   return (
-    <div className="container">
+    <>
       {visible && (
         <div className="steps">
           <div className="numbers">
@@ -33,7 +53,7 @@ const Steps = ({ items }) => {
           </div>
 
           <p className="message">
-            Step-{step}: {items[step - 1]}
+            Step-{step}: {messages.length === 0 || messages[step - 1].text}
           </p>
 
           <div className="actions">
@@ -46,15 +66,24 @@ const Steps = ({ items }) => {
           </div>
         </div>
       )}
-
-      <FaDeleteLeft
-        onClick={handleVisible}
-        className="close"
-        color="red"
-        size={30}
-        cursor="pointer"
-      />
-    </div>
+      {visible ? (
+        <FaDeleteLeft
+          onClick={handleVisible}
+          className="close"
+          color="red"
+          size={30}
+          cursor="pointer"
+        />
+      ) : (
+        <BiSolidShow
+          onClick={handleVisible}
+          className="close"
+          size={30}
+          color="purple"
+          cursor="pointer"
+        />
+      )}
+    </>
   );
 };
 
